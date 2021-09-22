@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import Header from './components/header';
+import ToDoItem from './components/toDoItem';
 
 export default function App() {
   const [todos, setTodos] = useState([
@@ -11,6 +12,12 @@ export default function App() {
     {text: 'get money', key: '4'},
   ]);
 
+  onPress = (key) => {
+    setTodos((previousTodos) => {
+      return previousTodos.filter(todo => todo.key != key);
+    })
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -19,7 +26,7 @@ export default function App() {
           <FlatList
             data={todos}
             renderItem={({ item }) => (
-              <Text>{item.text}</Text>
+              <ToDoItem item={item} onPress={this.onPress} />
             )}
           />
         </View>

@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import AddToDo from './components/addToDo';
 import Header from './components/header';
 import ToDoItem from './components/toDoItem';
 
@@ -13,15 +14,25 @@ export default function App() {
   ]);
 
   onPress = (key) => {
-    setTodos((previousTodos) => {
-      return previousTodos.filter(todo => todo.key != key);
-    })
+    setTodos((prevTodos) => {
+      return prevTodos.filter(todo => todo.key != key);
+    });
+  }
+
+  onSubmit = (text) => {
+    setTodos((prevTodos) => {
+      return [
+        { text: text, key: Math.random().toString() },
+        ...prevTodos,
+      ];
+    });
   }
 
   return (
     <SafeAreaView style={styles.container}>
+      <Header />
       <View style={styles.content}>
-        <Header />
+        <AddToDo onSubmit={this.onSubmit} />
         <View style={styles.list}>
           <FlatList
             data={todos}
@@ -42,5 +53,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     // alignItems: 'center',
     // justifyContent: 'center',
+  },
+  content: {
+    padding: 40,
+  },
+  list: {
+    marginTop: 20,
   },
 });

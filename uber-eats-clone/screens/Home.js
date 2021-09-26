@@ -1,10 +1,34 @@
-import React from 'react'
-import { StyleSheet, SafeAreaView, View, ScrollView } from 'react-native'
-import Categories from '../components/Categories'
-import HeaderTabs from '../components/HeaderTabs'
-import SearchBar from '../components/SearchBar'
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, SafeAreaView, View, ScrollView } from 'react-native';
+import Categories from '../components/Categories';
+import HeaderTabs from '../components/HeaderTabs';
+import RestaurantItems, { localRestaurants } from '../components/RestaurantItems';
+import SearchBar from '../components/SearchBar';
+
+const YELP_API_KEY =
+  "bdRJutLhFAQJ36t7b89CWjHFBU4OKzjt9wvZzcY-nkgmvTqlNMjZWV1eG7iBQ9R74SyfxRg9LWnBAkZY06BtAZAe4d2dfX-2vuX8a1l5V7foctHfX9UKEyoM5ts3YXYx";
 
 export default function Home() {
+    const [restaurantData, setRestaurantData] = useState(localRestaurants);
+    const getRestaurantsFromYelp = () => {
+        const yelpUrl = `https://api.yelp.com/v3/businesses/search?term=restaurants&location=Hollywood`;
+    
+        const apiOptions = {
+          headers: {
+            Authorization: `Bearer ${YELP_API_KEY}`,
+          },
+        };
+    
+        return fetch(yelpUrl, apiOptions)
+          .then((res) => res.json())
+          .then((json) => setRestaurantData(json.businesses));
+    };
+
+    // by default effects run after every completed render - similar to componentDidMount and componentDidUpdate
+    useEffect(() => {
+        getRestaurantsFromYelp(); // callback
+    }, [] /* dependency*/);
+    
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.innerContainer}>
@@ -13,6 +37,7 @@ export default function Home() {
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Categories />
+                <RestaurantItems restaurantData={restaurantData} />
             </ScrollView>
         </SafeAreaView>
     )
@@ -30,4 +55,4 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgb(255, 255, 255)',
         padding: 15,
     }
-})
+});

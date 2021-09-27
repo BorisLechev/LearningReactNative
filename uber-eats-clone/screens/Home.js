@@ -10,8 +10,10 @@ const YELP_API_KEY =
 
 export default function Home() {
     const [restaurantData, setRestaurantData] = useState(localRestaurants);
+    const [city, setCity] = useState("San Francisco");
+
     const getRestaurantsFromYelp = () => {
-        const yelpUrl = `https://api.yelp.com/v3/businesses/search?term=restaurants&location=Hollywood`;
+        const yelpUrl = `https://api.yelp.com/v3/businesses/search?term=restaurants&location=${city}`;
     
         const apiOptions = {
           headers: {
@@ -27,13 +29,13 @@ export default function Home() {
     // by default effects run after every completed render - similar to componentDidMount and componentDidUpdate
     useEffect(() => {
         getRestaurantsFromYelp(); // callback
-    }, [] /* dependency*/);
+    }, [city] /* dependency*/);
     
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.innerContainer}>
                 <HeaderTabs />
-                <SearchBar />
+                <SearchBar cityHandler={setCity} />
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Categories />

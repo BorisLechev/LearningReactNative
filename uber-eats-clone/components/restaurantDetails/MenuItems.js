@@ -38,7 +38,7 @@ export default function MenuItems() {
                         <FoodInfo food={food} />
                         <FoodImage food={food} />
                     </View>
-                    <Divider width={0.5} orientation="vertical " />
+                    <Divider style={ styles.divider } width={0.5} orientation="vertical " />
                 </View>
             ))}
         </ScrollView>
@@ -77,5 +77,8 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 8,
+    },
+    divider: {
+        marginHorizontal: 20,
     }
 });

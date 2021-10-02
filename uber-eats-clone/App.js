@@ -1,9 +1,8 @@
 import React from 'react';
-import Home from './screens/Home';
-import RestaurantDetails from './screens/RestaurantDetails';
+import RootNavigation from './navigation';
 
 export default function App() {
   return (
-    <RestaurantDetails />
+    <RootNavigation />
   );
 }

@@ -8,9 +8,9 @@ import RestaurantItems, { localRestaurants } from '../components/home/Restaurant
 import SearchBar from '../components/home/SearchBar';
 
 const YELP_API_KEY =
-  "bdRJutLhFAQJ36t7b89CWjHFBU4OKzjt9wvZzcY-nkgmvTqlNMjZWV1eG7iBQ9R74SyfxRg9LWnBAkZY06BtAZAe4d2dfX-2vuX8a1l5V7foctHfX9UKEyoM5ts3YXYx";
+  "i7EwHE9MMjYPBXMjhqhoYKtLUWqBPFag2W4o6WftTzDuwnn97SgoryMLbkWcf4NQHGtnjHyBIz9t2_7ySWUJl0-G7A5oyAmTa7U3uYegMk16RR2zYccm4kBh1gFXYXYx";
 
-export default function Home() {
+export default function Home({ navigation }) {
     const [restaurantData, setRestaurantData] = useState(localRestaurants);
     const [city, setCity] = useState("San Francisco");
     const [activeTab, setActiveTab] = useState("Delivery");
@@ -45,7 +45,7 @@ export default function Home() {
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Categories />
-                <RestaurantItems restaurantData={restaurantData} />
+                <RestaurantItems restaurantData={restaurantData} navigation={navigation} />
             </ScrollView>
             <Divider width={1} />
             <BottomTabs />

@@ -32,25 +32,40 @@ export const localRestaurants = [
     },
 ];
   
-export default function RestaurantItems(props) {
+export default function RestaurantItems({ navigation, ...props }) {
     return (
-       <TouchableOpacity activeOpacity={1} style={ styles.restaurantContainer }>
-           {localRestaurants.map((restaurant, index) => (
-               <View key={index} style={ styles.restaurantInnerContainer }>
-                    <RestaurantImage image={restaurant.image_url} />
-                    <RestaurantInfo name={restaurant.name} rating={restaurant.rating} />
-               </View>
+        <>
+            {props.restaurantData.map((restaurant, index) => (
+               <TouchableOpacity 
+                    key={index}
+                    activeOpacity={1} 
+                    style={ styles.restaurantContainer }
+                    onPress={() => navigation.navigate('RestaurantDetails', {
+                        // route in RestaurantDetails
+                        name: restaurant.name,
+                        image: restaurant.image_url,
+                        price: restaurant.price,
+                        reviews: restaurant.review_count,
+                        rating: restaurant.rating,
+                        categories: restaurant.categories,
+                    })}
+                >
+                    <View style={ styles.restaurantInnerContainer }>
+                        <RestaurantImage image={restaurant.image_url} />
+                        <RestaurantInfo name={restaurant.name} rating={restaurant.rating} />
+                    </View>
+                </TouchableOpacity>
            ))}
-       </TouchableOpacity>
+        </>
     )
 }
 
 const RestaurantImage = (props) => (
     // TouchableOpacity must have parent element
     <>
-        <Image source={{ uri: props.image_url }} style={styles.image} />
+        <Image source={{ uri: props.image }} style={styles.image} />
         <TouchableOpacity style={styles.heartWrapper}>
-            <MaterialCommunityIcons name="heart-outline" size={25} color="#rgb(255, 255, 255)" />
+            <MaterialCommunityIcons name="heart-outline" size={25} style={ styles.heart } />
         </TouchableOpacity>
     </>
 );
@@ -81,7 +96,12 @@ const styles = StyleSheet.create({
         height: 180,
     },
     heartWrapper: {
-
+        position: 'absolute',
+        top: 20,
+        right: 20,
+    },
+    heart: {
+        color: 'rgb(255, 255, 255)',
     },
     name: {
         fontSize: 15,

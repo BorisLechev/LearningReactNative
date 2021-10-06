@@ -1,14 +1,28 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 import { Button, Input, Image } from "react-native-elements";
+import { auth } from '../firebase';
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     
-    const signin = () => {
+    // do something after render
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((authUser) => {
+          if (authUser) {
+            navigation.replace("Home");
+          }
+        });
+    
+        return unsubscribe;
+    }, []);
 
+    const signIn = () => {
+        auth
+        .signInWithEmailAndPassword(email, password)
+        .catch((error) => alert(error));
     };
 
     return (
@@ -21,6 +35,7 @@ export default function LoginScreen() {
             <View style={ styles.inputContainer }>
             <Input
                 placeholder="Email"
+                autoFocus
                 type="email"
                 value={email}
                 onChangeText={(text) => setEmail(text)}
@@ -33,8 +48,9 @@ export default function LoginScreen() {
                 onChangeText={(text) => setPassword(text)}
             />
             </View>
-            <Button containerStyle={styles.button} title="Login" onPress={signin} />
+            <Button containerStyle={styles.button} title="Login" onPress={signIn} />
             <Button
+                onPress={() => navigation.navigate("Register")}
                 containerStyle={styles.button}
                 title="Register"
                 type="outline"

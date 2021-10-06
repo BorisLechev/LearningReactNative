@@ -11,9 +11,11 @@ export default function LoginScreen({ navigation }) {
     // do something after render
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((authUser) => {
-          if (authUser) {
-            navigation.replace("Home");
-          }
+            console.log(authUser);
+
+            if (authUser) {
+                navigation.replace("Home");
+            }
         });
     
         return unsubscribe;
@@ -46,6 +48,7 @@ export default function LoginScreen({ navigation }) {
                 type="password"
                 value={password}
                 onChangeText={(text) => setPassword(text)}
+                onSubmitEditing={signIn}
             />
             </View>
             <Button containerStyle={styles.button} title="Login" onPress={signIn} />
